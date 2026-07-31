@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@theme {
+  --color-baby-pink: #ffe4ec;
+  --color-blush: #ffd1dc;
+  --color-rose: #e8a0bf;
+  --color-rose-dark: #d4789f;
+  --color-soft-gold: #f5d78e;
+  --color-lavender: #e8d5f2;
+  --font-body: "Quicksand", sans-serif;
+  --font-hand: "Caveat", cursive;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(165deg, #e8b4c8 0%, #d99aaa 35%, #c9889e 65%, #b87a94 100%);
+  color: #3d2430;
+  touch-action: manipulation;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+/* Soft readable copy on dark-pink background */
+.text-on-bg {
+  color: rgba(255, 245, 248, 0.92);
+}
+
+.text-on-bg-muted {
+  color: rgba(255, 245, 248, 0.78);
+}
+
+/* Pill button glow */
+@keyframes glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 18px rgba(232, 160, 191, 0.4), 0 4px 14px rgba(212, 120, 159, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(232, 160, 191, 0.65), 0 4px 20px rgba(212, 120, 159, 0.35);
+  }
+}
+
+.btn-glow {
+  animation: glow-pulse 2.2s ease-in-out infinite;
+}
+
+/* Background decor — CSS only, gentle & smooth */
+@keyframes decor-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(var(--drift, 0px), -14px, 0) rotate(6deg);
+  }
+}
+
+@keyframes decor-sway {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-5deg);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0) rotate(5deg);
+  }
+}
+
+@keyframes decor-ribbon {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes decor-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes decor-wiggle {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(4deg);
+  }
+}
+
+@keyframes heart-rain {
+  0% {
+    transform: translate3d(0, -8vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 110vh, 0) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+.decor-float {
+  animation-name: decor-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.decor-sway {
+  animation-name: decor-sway;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.decor-ribbon {
+  animation-name: decor-ribbon;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.decor-pulse {
+  display: inline-block;
+  animation: decor-pulse 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.decor-wiggle {
+  animation: decor-wiggle 0.4s ease-in-out infinite;
+  will-change: transform;
+}
+
+.heart-rain {
+  animation-name: heart-rain;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .decor-float,
+  .decor-sway,
+  .decor-ribbon,
+  .decor-pulse,
+  .decor-wiggle,
+  .heart-rain,
+  .btn-glow {
+    animation: none !important;
+  }
+}
