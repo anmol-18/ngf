@@ -55,10 +55,17 @@ export const FIND_HEART_MISS_MESSAGES = [
   'Not that one — but strawberry!',
 ];
 
-// TODO: Personalize the love letter revealed in Find My Heart
+// Shown under photo1 in Find My Heart (same slide, not a separate slide)
 export const FIND_HEART_LETTER = `Every time I look at you, my heart does a little happy dance.
 You are the most beautiful surprise life ever gave me.
 Thank you for choosing me.`;
+
+// Shown under photo2 in Find My Heart
+export const PHOTO2_MESSAGE = 'You are my love of my life';
+
+// Shown with couple photo on the closing screen
+export const COUPLE_PHOTO_MESSAGE =
+  'Will you be my girlfriend again, I want to date you forever and ever and ever';
 
 export const FIND_HEART_COUPON = {
   emoji: '💌',
@@ -69,7 +76,7 @@ export const FIND_HEART_COUPON = {
 
 export const SCRATCH_CARD_TEXTS = [
   "One day trip to Neemrana Fort for staycation.",
-  'Full body massage by me❤️❤️❤️!!!!!',
+  'One day trip to Neemrana Fort for staycation and Full body massage by me❤️❤️❤️!!!!!',
 ];
 
 export const SLOT_MACHINE_REWARD = {
@@ -99,9 +106,10 @@ export const CLOSING_MESSAGE =
   'My lovely most beautiful girl ISHU, I love you more than words can say. Happy National Girlfriend Day! 💗';
 
 export const ASSETS = {
-  // TODO: Replace .svg placeholders with your real .jpg files when ready
   couplePhoto: '/assets/couple-photo.jpeg',
   photo1: '/assets/photo1.jpeg',
+  // TODO: Add photo2.jpeg to /public/assets/
+  photo2: '/assets/photo2.jpeg',
   messageVideo: '/assets/message.mp4',
   revealChime: '/assets/sfx/reveal-chime.mp3',
   bgMusic: '/assets/bg-music.mp3',

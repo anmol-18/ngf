@@ -7,14 +7,40 @@ import {
   FIND_HEART_MISS_MESSAGES,
   FIND_HEART_LETTER,
   FIND_HEART_COUPON,
+  PHOTO2_MESSAGE,
   ASSETS,
 } from '../../constants/config';
 import { burstConfetti, goldenBurst } from '../../utils/effects';
-import { SPRING_SOFT } from '../../constants/motion';
 
 function seededRandom(seed) {
   const x = Math.sin(seed) * 10000;
   return x - Math.floor(x);
+}
+
+function PhotoSlide({ src, message, placeholderLabel }) {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      {!failed ? (
+        <img
+          src={src}
+          alt=""
+          className="max-h-[52vh] w-full rounded-2xl object-contain"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <div className="flex min-h-40 w-full items-center justify-center rounded-2xl bg-blush/50 px-4 text-center text-sm text-[#8a6a75]">
+          📷 Add {placeholderLabel} to /public/assets/
+        </div>
+      )}
+      {message && (
+        <p className="whitespace-pre-line text-center font-hand text-xl leading-relaxed text-rose-dark sm:text-2xl">
+          {message}
+        </p>
+      )}
+    </div>
+  );
 }
 
 export default function FindMyHeart({ onNext }) {
@@ -38,9 +64,20 @@ export default function FindMyHeart({ onNext }) {
     []
   );
 
+  // Letter is under photo1 — not its own slide
   const revealItems = [
-    { type: 'letter', content: FIND_HEART_LETTER },
-    { type: 'photo', src: ASSETS.photo1 },
+    {
+      type: 'photo',
+      src: ASSETS.photo1,
+      message: FIND_HEART_LETTER,
+      placeholder: 'photo1.jpeg',
+    },
+    {
+      type: 'photo',
+      src: ASSETS.photo2,
+      message: PHOTO2_MESSAGE,
+      placeholder: 'photo2.jpeg',
+    },
     { type: 'audio', src: ASSETS.voiceNote },
     { type: 'coupon', ...FIND_HEART_COUPON },
   ];
@@ -64,6 +101,8 @@ export default function FindMyHeart({ onNext }) {
     }
   };
 
+  const current = revealItems[carouselIndex];
+
   return (
     <ScreenWrapper className="justify-start pt-4">
       <h2 className="font-hand mb-1 text-center text-3xl text-rose-dark">Find My Heart</h2>
@@ -71,74 +110,58 @@ export default function FindMyHeart({ onNext }) {
         {found ? 'You found it!' : 'One of these hearts is yours — find it 💕'}
       </p>
 
-      <div className="relative h-[45vh] min-h-[280px] w-full max-w-lg">
-        {hearts.map((h) => {
-          const isCorrect = h.id === correctIndex;
-          const dimmed = found && !isCorrect;
-          const isWiggle = wiggleId === h.id;
+      {!found && (
+        <div className="relative h-[45vh] min-h-[280px] w-full max-w-lg">
+          {hearts.map((h) => {
+            const isWiggle = wiggleId === h.id;
 
-          if (found && isCorrect) {
             return (
-              <motion.span
+              <button
                 key={h.id}
-                className="absolute z-10 select-none"
-                style={{ left: h.left, top: h.top, fontSize: h.size }}
-                initial={{ scale: 1 }}
-                animate={{ scale: 1.7 }}
-                transition={SPRING_SOFT}
+                type="button"
+                onClick={() => handleHeartTap(h.id)}
+                className={`absolute z-10 select-none ${!isWiggle ? 'decor-float' : ''} ${
+                  isWiggle ? 'decor-wiggle' : ''
+                }`}
+                style={{
+                  left: h.left,
+                  top: h.top,
+                  fontSize: h.size,
+                  '--drift': `${h.drift}px`,
+                  animationDuration: `${h.duration}s`,
+                  animationDelay: `${h.delay}s`,
+                }}
               >
-                💖
-              </motion.span>
+                💗
+              </button>
             );
-          }
+          })}
 
-          return (
-            <button
-              key={h.id}
-              type="button"
-              disabled={found}
-              onClick={() => handleHeartTap(h.id)}
-              className={`absolute z-10 select-none ${dimmed ? 'pointer-events-none opacity-20' : ''} ${
-                !found && !isWiggle ? 'decor-float' : ''
-              } ${isWiggle ? 'decor-wiggle' : ''}`}
-              style={{
-                left: h.left,
-                top: h.top,
-                fontSize: h.size,
-                '--drift': `${h.drift}px`,
-                animationDuration: `${h.duration}s`,
-                animationDelay: `${h.delay}s`,
-              }}
-            >
-              💗
-            </button>
-          );
-        })}
-
-        <AnimatePresence>
-          {bubble && (
-            <motion.div
-              className="pointer-events-none absolute z-20 max-w-[180px] rounded-2xl bg-white px-3 py-2 text-sm text-[#5c3d4a] shadow-lg"
-              style={{
-                left: hearts[bubble.id]?.left,
-                top: `calc(${hearts[bubble.id]?.top} - 44px)`,
-                transform: 'translateX(-40%)',
-              }}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-            >
-              {bubble.msg}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+          <AnimatePresence>
+            {bubble && (
+              <motion.div
+                className="pointer-events-none absolute z-20 max-w-[180px] rounded-2xl bg-white px-3 py-2 text-sm text-[#5c3d4a] shadow-lg"
+                style={{
+                  left: hearts[bubble.id]?.left,
+                  top: `calc(${hearts[bubble.id]?.top} - 44px)`,
+                  transform: 'translateX(-40%)',
+                }}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
+              >
+                {bubble.msg}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
 
       <AnimatePresence>
         {found && (
           <motion.div
-            className="mt-4 w-full max-w-md space-y-4"
+            className="mt-2 w-full max-w-md space-y-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
@@ -156,41 +179,27 @@ export default function FindMyHeart({ onNext }) {
                   exit={{ opacity: 0, x: -20 }}
                   transition={{ duration: 0.28 }}
                 >
-                  {revealItems[carouselIndex].type === 'letter' && (
-                    <p className="whitespace-pre-line text-center text-sm leading-relaxed text-[#5c3d4a]">
-                      {revealItems[carouselIndex].content}
-                    </p>
+                  {current.type === 'photo' && (
+                    <PhotoSlide
+                      src={current.src}
+                      message={current.message}
+                      placeholderLabel={current.placeholder}
+                    />
                   )}
-                  {revealItems[carouselIndex].type === 'photo' && (
-                    <div className="flex flex-col items-center">
-                      <img
-                        src={revealItems[carouselIndex].src}
-                        alt="Us"
-                        className="h-48 w-full rounded-2xl object-cover"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                          e.target.nextSibling.style.display = 'flex';
-                        }}
-                      />
-                      <div className="hidden h-48 w-full items-center justify-center rounded-2xl bg-blush/50 text-sm text-[#8a6a75]">
-                        📷 Add photo1.jpg to /public/assets/
-                      </div>
-                    </div>
-                  )}
-                  {revealItems[carouselIndex].type === 'audio' && (
+                  {current.type === 'audio' && (
                     <div className="flex flex-col items-center gap-3 py-4">
                       <span className="text-3xl">🎙️</span>
                       <p className="text-sm text-[#8a6a75]">A voice note, just for you</p>
-                      <audio controls className="w-full max-w-xs" src={revealItems[carouselIndex].src}>
+                      <audio controls className="w-full max-w-xs" src={current.src}>
                         Your browser does not support audio.
                       </audio>
                     </div>
                   )}
-                  {revealItems[carouselIndex].type === 'coupon' && (
+                  {current.type === 'coupon' && (
                     <RewardCard
-                      emoji={revealItems[carouselIndex].emoji}
-                      title={revealItems[carouselIndex].title}
-                      desc={revealItems[carouselIndex].desc}
+                      emoji={current.emoji}
+                      title={current.title}
+                      desc={current.desc}
                       className="shadow-none"
                     />
                   )}
@@ -225,7 +234,7 @@ export default function FindMyHeart({ onNext }) {
               </div>
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center pb-4">
               <PillButton onClick={onNext}>Continue</PillButton>
             </div>
           </motion.div>
