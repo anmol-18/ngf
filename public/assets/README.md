@@ -8,6 +8,6 @@
 | `message.mp4` | Video Message screen |
 | `sfx/reveal-chime.mp3` | Lucky Love Cards reveal |
 | `bg-music.mp3` | Final Gift |
-| `voice-note.mp3` | Find My Heart voice note (optional) |
+| `voice-message.mp4` | Find My Heart voice note |
 
 Customize text in `src/constants/config.js`.

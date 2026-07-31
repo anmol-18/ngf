@@ -113,5 +113,6 @@ export const ASSETS = {
   messageVideo: '/assets/message.mp4',
   revealChime: '/assets/sfx/reveal-chime.mp3',
   bgMusic: '/assets/bg-music.mp3',
-  voiceNote: '/assets/voice-note.mp3',
+  // Voice note is an .mp4 file (AAC/MP4) — played via <audio>/<video>
+  voiceNote: '/assets/voice-message.mp4',
 };

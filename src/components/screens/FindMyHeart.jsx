@@ -43,6 +43,39 @@ function PhotoSlide({ src, message, placeholderLabel }) {
   );
 }
 
+/** Plays voice notes saved as .mp4 (works on mobile Safari/Chrome) */
+function VoiceNotePlayer({ src }) {
+  const [failed, setFailed] = useState(false);
+
+  return (
+    <div className="flex flex-col items-center gap-3 py-4">
+      <span className="text-4xl">🎙️</span>
+      <p className="text-sm text-[#8a6a75]">A voice note, just for you</p>
+
+      {failed ? (
+        <p className="px-2 text-center text-sm text-[#8a6a75]">
+          Couldn&apos;t load the voice note. Make sure{' '}
+          <span className="font-semibold">voice-message.mp4</span> is in /public/assets/
+        </p>
+      ) : (
+        <video
+          key={src}
+          controls
+          playsInline
+          preload="auto"
+          src={src}
+          className="w-full max-w-xs rounded-2xl bg-[#2a1520] shadow-md"
+          style={{ maxHeight: 180 }}
+          onError={() => setFailed(true)}
+        >
+          <source src={src} type="video/mp4" />
+          <source src={src} type="audio/mp4" />
+        </video>
+      )}
+    </div>
+  );
+}
+
 export default function FindMyHeart({ onNext }) {
   const correctIndex = useMemo(() => Math.floor(Math.random() * 20), []);
   const [found, setFound] = useState(false);
@@ -187,13 +220,7 @@ export default function FindMyHeart({ onNext }) {
                     />
                   )}
                   {current.type === 'audio' && (
-                    <div className="flex flex-col items-center gap-3 py-4">
-                      <span className="text-3xl">🎙️</span>
-                      <p className="text-sm text-[#8a6a75]">A voice note, just for you</p>
-                      <audio controls className="w-full max-w-xs" src={current.src}>
-                        Your browser does not support audio.
-                      </audio>
-                    </div>
+                    <VoiceNotePlayer src={current.src} />
                   )}
                   {current.type === 'coupon' && (
                     <RewardCard
