@@ -105,14 +105,25 @@ export const FINAL_SURPRISE_TEXT = 'You won... Me. Forever.';
 export const CLOSING_MESSAGE =
   'My lovely most beautiful girl ISHU, I love you more than words can say. Happy National Girlfriend Day! 💗';
 
+// export const ASSETS = {
+//   couplePhoto: '/assets/couple-photo.jpeg',
+//   photo1: '/assets/photo1.jpeg',
+//   // TODO: Add photo2.jpeg to /public/assets/
+//   photo2: '/assets/photo2.jpeg',
+//   messageVideo: '/assets/message.mp4',
+//   revealChime: '/assets/sfx/reveal-chime.mp3',
+//   bgMusic: '/assets/bg-music.mp3',
+//   // Voice note is an .mp4 file (AAC/MP4) — played via <audio>/<video>
+//   voiceNote: '/assets/voice-message.mp4',
+// };
+const BASE = import.meta.env.BASE_URL;
+
 export const ASSETS = {
-  couplePhoto: '/assets/couple-photo.jpeg',
-  photo1: '/assets/photo1.jpeg',
-  // TODO: Add photo2.jpeg to /public/assets/
-  photo2: '/assets/photo2.jpeg',
-  messageVideo: '/assets/message.mp4',
-  revealChime: '/assets/sfx/reveal-chime.mp3',
-  bgMusic: '/assets/bg-music.mp3',
-  // Voice note is an .mp4 file (AAC/MP4) — played via <audio>/<video>
-  voiceNote: '/assets/voice-message.mp4',
+  couplePhoto: `${BASE}assets/couple-photo.jpeg`,
+  photo1: `${BASE}assets/photo1.jpeg`,
+  photo2: `${BASE}assets/photo2.jpeg`,
+  messageVideo: `${BASE}assets/message.mp4`,
+  revealChime: `${BASE}assets/sfx/reveal-chime.mp3`,
+  bgMusic: `${BASE}assets/bg-music.mp3`,
+  voiceNote: `${BASE}assets/voice-message.mp4`,
 };
